@@ -9,7 +9,7 @@ interface CryptoMethod {
     @param toStoreTo A string to store the encrypted text to.
     @returns Returns success code of the encryption. See Result enum for details.
     */
-   public Result encrypt(final String toEncrypt);
+   public Result encrypt(final String toEncrypt, final int step);
    
    public Result encrypt(final String toEncrypt, final String key);
    public boolean requiresKey();
@@ -19,7 +19,7 @@ interface CryptoMethod {
     @param toStoreTo A string to store the derypted plain text to.
     @returns Returns success code of the decryption. See Result enum for details.
     */
-   public Result decrypt(final String toDecrypt);
+   public Result decrypt(final String toDecrypt, final int step);
    
    public Result decrypt(final String toDecrypt, final String key);
 

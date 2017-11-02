@@ -25,13 +25,14 @@ public class EasyCryptoConsole {
 				String e = console.readLine("Please enter text to be encrypted > ");
 				String m = console.readLine("Please enter encryption method > ");
 				String k = console.readLine("Please enter encryption key > ");
+				int step = Integer.parseInt(console.readLine("Please enter step > "));
 
 				EasyCryptoAPI.Result result;
 
 				if (d.equalsIgnoreCase("e")) {
-					result = EasyCryptoAPI.encrypt(e, m, k);
+					result = EasyCryptoAPI.encrypt(e, m, k, step);
 				} else if (d.equalsIgnoreCase("d")) {
-					result = EasyCryptoAPI.decrypt(e, m, k);
+					result = EasyCryptoAPI.decrypt(e, m, k, step);
 				} else {
 					return;
 				}

@@ -3,7 +3,21 @@ package easycrypto;
 import easycrypto.EasyCryptoAPI.Result;
 import easycrypto.EasyCryptoAPI.ResultCode;
 
-class MatrixMethod implements CryptoMethod {
+class MatrixMethod extends IterableMethod implements CryptoMethod {
+	private static final int STEPS_NUMBER = 1;
+	private static final String ENCRYPT_STEP_ONE_INTRO = "Result: ";
+	private static final String DECRYPT_STEP_ONE_INTRO = "Result: ";
+
+	public MatrixMethod() {
+		super(STEPS_NUMBER);
+		initializeResponses();
+	}
+
+	@Override
+	protected void initializeResponses() {
+		addToEncryptResponse(1, ENCRYPT_STEP_ONE_INTRO);
+		addToDecryptResponse(1, DECRYPT_STEP_ONE_INTRO);
+	}
 
 	@Override
 	public boolean requiresKey() {
@@ -11,7 +25,7 @@ class MatrixMethod implements CryptoMethod {
 	}
 
 	@Override
-	public Result encrypt(final String toEncrypt) {
+	public Result encrypt(final String toEncrypt, final int step) {
 		String toStoreTo = new String();
 		int matrixWidth = (int) Math.floor(Math.sqrt(toEncrypt.length()));
 
@@ -26,19 +40,19 @@ class MatrixMethod implements CryptoMethod {
 			toRotate = toEncrypt;
 		}
 		for (int outer = 0; outer < matrixWidth; outer++) {
-			toStoreTo += toRotate.substring(outer,outer+1);
+			addToEncryptResponse(1, toRotate.substring(outer,outer+1));
 			for (int inner = outer+matrixWidth; inner < toRotate.length(); inner += matrixWidth) {
-				toStoreTo += toRotate.substring(inner,inner+1);
+				addToEncryptResponse(1, toRotate.substring(inner,inner+1));
 			}
 		}
 		if (tmp.length() > 0) {
-			toStoreTo += tmp;
+			addToEncryptResponse(1, tmp);
 		}
-		return new Result(ResultCode.ESuccess, toStoreTo);
+		return new Result(ResultCode.ESuccess, getEncryptResponse(step));
 	}
 	
 	@Override
-	public Result decrypt(final String toDecrypt) {
+	public Result decrypt(final String toDecrypt, final int step) {
 		String toStoreTo = new String();
 		int matrixWidth = (int)Math.floor(Math.sqrt(toDecrypt.length()));
 
@@ -53,20 +67,20 @@ class MatrixMethod implements CryptoMethod {
 			toRotate = toDecrypt;
 		}
 		for (int outer = 0; outer < matrixWidth; outer++) {
-			toStoreTo += toRotate.substring(outer,outer+1);
+			addToDecryptResponse(1, toRotate.substring(outer,outer+1));
 			for (int inner = outer+matrixWidth; inner < toRotate.length(); inner += matrixWidth) {
-				toStoreTo += toRotate.substring(inner,inner+1);
+				addToDecryptResponse(1, toRotate.substring(inner,inner+1));
 			}
 		}
 		if (tmp.length() > 0) {
-			toStoreTo = tmp + toStoreTo;
+			addToDecryptResponse(1, toStoreTo);
 		}
-		return new Result(ResultCode.ESuccess, toStoreTo);
+		return new Result(ResultCode.ESuccess, getDecryptResponse(step));
 	}
 
 	@Override
 	public String method() {
-		return "matrix";
+		return "matrix (max-step=" + STEPS_NUMBER +")";
 	}
 	
 	//empty methods for interface

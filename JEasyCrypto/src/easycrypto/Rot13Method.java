@@ -3,15 +3,30 @@ package easycrypto;
 import easycrypto.EasyCryptoAPI.Result;
 import easycrypto.EasyCryptoAPI.ResultCode;
 
-class Rot13Method implements CryptoMethod {
+class Rot13Method extends IterableMethod implements CryptoMethod {
 	
+	private static final int STEPS_NUMBER = 1;
+	private static final String ENCRYPT_STEP_ONE_INTRO = "Result: ";
+	private static final String DECRYPT_STEP_ONE_INTRO = "Result: ";
+
+	public Rot13Method() {
+		super(STEPS_NUMBER);
+		initializeResponses();
+	}
+
+	@Override
+	protected void initializeResponses() {
+		addToEncryptResponse(1, ENCRYPT_STEP_ONE_INTRO);
+		addToDecryptResponse(1, DECRYPT_STEP_ONE_INTRO);
+	}
+
 	@Override
 	public boolean requiresKey() {
-	return false;
+		return false;
 	}
 	
 	@Override
-	public Result encrypt(final String toEncrypt){
+	public Result encrypt(final String toEncrypt, final int step){
 		String res="";
 		char c='a';
 		for (int i=0;i<toEncrypt.length();i++){
@@ -21,13 +36,13 @@ class Rot13Method implements CryptoMethod {
 			} else{
 				c=((c<(int)'N') ? (c+=13) : (c-=13));
 			}
-			res=res+c;
+			addToEncryptResponse(1, "" + c);
 		}
-		return new Result(ResultCode.ESuccess,res);
+		return new Result(ResultCode.ESuccess,getEncryptResponse(step));
 	}
 	
 	@Override
-	public Result decrypt(final String toDecrypt){
+	public Result decrypt(final String toDecrypt, final int step){
 		String res="";
 		char c='a';
 		for (int i=0;i<toDecrypt.length();i++){
@@ -37,14 +52,14 @@ class Rot13Method implements CryptoMethod {
 			} else{
 				c=((c>=(int)'N') ? (c-=13) : (c+=13));
 			}
-			res=res+c;
+			addToDecryptResponse(1, "" + c);
 		}
-		return new Result(ResultCode.ESuccess,res);
+		return new Result(ResultCode.ESuccess,getDecryptResponse(step));
 	}
 	
 	@Override
 	public String method(){
-		return "rot13";
+		return "rot13 (max-step=" + STEPS_NUMBER +")";
 	}
 	
 	//empty methods for interface

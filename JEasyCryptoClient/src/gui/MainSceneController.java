@@ -21,6 +21,8 @@ public class MainSceneController extends AbstractSceneController implements Clie
 	@FXML
     private TextField methodTextField;
     @FXML
+    private TextField stepTextField;
+    @FXML
     private TextArea inputTextArea;
     @FXML
     private TextArea outputTextArea;
@@ -35,10 +37,12 @@ public class MainSceneController extends AbstractSceneController implements Clie
     @FXML
     private void handleEncryptAction(ActionEvent event) {
         String method = methodTextField.getText();
+        String step = stepTextField.getText();
         String data = inputTextArea.getText();
         String key = keyTextArea.getText();
+        
         try{
-            cryptoClient.sendEncryptRequest(method, data, key);
+            cryptoClient.sendEncryptRequest(method, data, key, step);
         } catch (Exception e) {
             e.printStackTrace();
             outputTextArea.setText(ERROR_MSG);
@@ -48,10 +52,11 @@ public class MainSceneController extends AbstractSceneController implements Clie
     @FXML
     private void handleDecryptAction(ActionEvent event) {
         String method = methodTextField.getText();
+        String step = stepTextField.getText();
         String data = inputTextArea.getText();
         String key = keyTextArea.getText();
         try{
-            cryptoClient.sendDecryptRequest(method, data, key);
+            cryptoClient.sendDecryptRequest(method, data, key, step);
         } catch (Exception e) {
             e.printStackTrace();
             outputTextArea.setText(ERROR_MSG);

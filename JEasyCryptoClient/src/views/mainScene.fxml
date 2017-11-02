@@ -11,6 +11,8 @@
 
         <Label text="Method:" style="-fx-font-weight: bold; -fx-text-fill: #cdcfd3; -fx-font-size: 12pt;"/>
         <TextField fx:id="methodTextField" prefColumnCount="10"/>
+        <Label text="Step:" style="-fx-font-weight: bold; -fx-text-fill: #cdcfd3; -fx-font-size: 12pt;"/>
+        <TextField fx:id="stepTextField" prefColumnCount="10"/>
         <Button fx:id="encodeButton" text="Encrypt" onAction="#handleEncryptAction"/>
         <Button fx:id="decodeButton" text="Decrypt" onAction="#handleDecryptAction"/>
         <Pane HBox.hgrow="ALWAYS" />
@@ -44,6 +46,7 @@
                   GridPane.rowIndex="2"
                   prefRowCount="9" 
                   prefColumnCount="40"
-                  editable="false"/>
+                  editable="false"
+                  wrapText="true"/>
     </GridPane>
 </VBox>

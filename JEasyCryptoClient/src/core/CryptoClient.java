@@ -50,13 +50,14 @@ public class CryptoClient implements ReaderObserver {
 	/**
 	 *Sends encryption request to the server
 	 */
-	public String sendEncryptRequest(String method, String text, String key) throws IOException {
+	public String sendEncryptRequest(String method, String text, String key, String step) throws IOException {
 		JSONObject request = new JSONObject();
 		request.put("id", requestId++);
 		request.put("operation", "encrypt");
 		request.put("method", method);
 		request.put("data", text);
 		request.put("key", key);
+		request.put("step", step);
 		String data = request.toJSONString();
 
 		byte[] serializedData = data.getBytes(StandardCharsets.UTF_16);
@@ -69,13 +70,14 @@ public class CryptoClient implements ReaderObserver {
 	/**
 	 *Sends decryption request to the server
 	 */
-	public String sendDecryptRequest(String method, String text, String key) throws IOException {
+	public String sendDecryptRequest(String method, String text, String key, String step) throws IOException {
 		JSONObject request = new JSONObject();
 		request.put("id", requestId++);
 		request.put("operation", "decrypt");
 		request.put("method", method);
 		request.put("data", text);
 		request.put("key", key);
+		request.put("step", step);
 		String data = request.toJSONString();
 
 		byte[] serializedData = data.getBytes(StandardCharsets.UTF_16);
